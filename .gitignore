@@ -6,3 +6,4 @@ env/
 
 # Ignore any local development files or directories
 # Add more patterns as needed
+__pycache__/
