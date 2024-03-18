@@ -1,0 +1,8 @@
+# Ignore virtual environment
+env/
+
+# Ignore any compiled Python files
+*.pyc
+
+# Ignore any local development files or directories
+# Add more patterns as needed
