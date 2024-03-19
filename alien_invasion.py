@@ -20,17 +20,36 @@ class AlienInvasion:
 
     def run_game(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-
+            self._check_events() 
+            self._update_screen()
+            self.ship.update()
+            self.clock.tick(60)
             # redraw the screen druing each pass through the loop.
             self.screen.fill(self.settings.bg_color)
             self.ship.blitme()
 
             # make the most recently drawn screen visible
             pygame.display.flip()
-            self.clock.tick(60)
+
+    def _check_events(self):
+        '''response to keypresses and mouse events'''
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    #move the ship to the right
+                    self.ship.moving_right = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+
+    def _update_screen(self):
+        '''update images on the screen, and flip to the new screen'''
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+
+        pygame.display.flip()
 
 if __name__ == '__main__':
     ai = AlienInvasion()
