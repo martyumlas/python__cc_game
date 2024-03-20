@@ -21,13 +21,17 @@ class Ship:
         self.moving_right = False
         self.moving_left = False
 
+        # print(vars(self))
+        # print(dir(self))
+
     def update(self):
         '''update the ship's position based on the movement flag'''
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed 
-        self.rect.x = int(self.x)
+        self.rect.x = self.x
+        
     def blitme(self):
         '''draw the ship at its current position'''
         self.screen.blit(self.image, self.rect)
