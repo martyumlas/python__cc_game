@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+from bullet import Bullet
 from settings import Settings
 from ship import Ship
 
@@ -13,20 +14,31 @@ class AlienInvasion:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings()
-        # self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         # full screen 
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
-        pygame.display.set_caption('Alien Invasion')
+        pygame.display.set_caption('Bubu\'s game')
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         while True:
             self._check_events() 
             self._update_screen()
             self.ship.update()
+            self.bullets.update()
+
+             
+            # get rid of bullets that have disappeared.
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+                print(len(self.bullets))
+
+
             self.clock.tick(60)
             # redraw the screen druing each pass through the loop.
             self.screen.fill(self.settings.bg_color)
@@ -48,6 +60,10 @@ class AlienInvasion:
     def _update_screen(self):
         '''update images on the screen, and flip to the new screen'''
         self.screen.fill(self.settings.bg_color)
+
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+        
         self.ship.blitme()
 
         pygame.display.flip()
@@ -61,12 +77,20 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+
+    def _fire_bullet(self):
+        '''create a new bullet and add it to the bullets group'''
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
 
 if __name__ == '__main__':
     ai = AlienInvasion()
