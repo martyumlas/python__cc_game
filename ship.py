@@ -30,7 +30,7 @@ class Ship:
             self.x += self.settings.ship_speed
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed 
-            self.rect.x = self.x
+        self.rect.x = self.x
         
     def blitme(self):
         '''draw the ship at its current position'''
@@ -38,7 +38,7 @@ class Ship:
 
     def center_ship(self):
         '''center the ship on the screen'''
-        self.rect.midbottom = self.screen_rect.middlebottom
+        self.rect.midbottom = self.screen_rect.midbottom
         self.x = float(self.rect.x)
 
 
