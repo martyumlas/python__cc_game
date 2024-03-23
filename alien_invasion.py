@@ -1,10 +1,10 @@
-from re import A
 import sys
 import pygame
 
 from time import sleep
 from alien import Alien
 from bullet import Bullet
+from button import Button
 from game_stats import GameStats
 from settings import Settings
 from ship import Ship
@@ -24,8 +24,11 @@ class AlienInvasion:
         # self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption('Bubu\'s game')
 
-        # start alien invasion in an active state
-        self.game_active = True
+        # start alien invasion in an inactive state
+        self.game_active = False
+
+        # make the play button
+        self.play_button = Button(self, 'Play')
         
         # create an instance to store game statistics
         self.stats = GameStats(self)
@@ -74,6 +77,10 @@ class AlienInvasion:
         
         self.ship.blitme()
         self.aliens.draw(self.screen)
+
+        # draw the play button if the game is inactive.
+        if not self.game_active:
+            self.play_button.draw_button()
 
         pygame.display.flip()
 
