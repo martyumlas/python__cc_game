@@ -1,4 +1,5 @@
 import sys
+from typing import Any
 import pygame
 
 from alien import Alien
@@ -17,9 +18,9 @@ class AlienInvasion:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         # full screen 
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.settings.screen_width = self.screen.get_rect().width
-        self.settings.screen_height = self.screen.get_rect().height
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # self.settings.screen_width = self.screen.get_rect().width
+        # self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption('Bubu\'s game')
 
         self.ship = Ship(self)
@@ -127,7 +128,20 @@ class AlienInvasion:
 
     def _update_aliens(self):
         '''update the positions of the aliens in the fleet'''
+        self._check_fleet_edges()
         self.aliens.update()
+
+    def _check_fleet_edges(self):
+        '''respond appropiately if any aliens have reached an edge'''
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self.change_fleet_direction()
+                break
+
+    def change_fleet_direction(self):
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
 if __name__ == '__main__':
     ai = AlienInvasion()
