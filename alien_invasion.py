@@ -35,6 +35,7 @@ class AlienInvasion:
             self.ship.update()
             self.bullets.update()
             self._update_bullets()
+            self._update_aliens()
             self.clock.tick(60)
             # redraw the screen druing each pass through the loop.
             self.screen.fill(self.settings.bg_color)
@@ -124,6 +125,9 @@ class AlienInvasion:
             current_x = alien_width
             current_y += 2 * alien_height
 
+    def _update_aliens(self):
+        '''update the positions of the aliens in the fleet'''
+        self.aliens.update()
 
 if __name__ == '__main__':
     ai = AlienInvasion()
